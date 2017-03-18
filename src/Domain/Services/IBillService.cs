@@ -9,7 +9,8 @@ namespace Domain.Services
         Bill AddBill(decimal sum, int clientId);
         void PayBill(int id,DateTime createdAt);
         List<Bill> GetBills(int offset, int count);
+        List<Bill> GetClientBills(int id, int offset, int count);
         int GetNewBillId();
-        int GetNewBillNumber(int month);
+        int GetNewBillNumber(int month,int year);
     }
 }

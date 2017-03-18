@@ -22,7 +22,7 @@ namespace Domain.Services
                 throw new ArgumentException("Wrong client name");
             if (!VerifyInn(inn))
                 throw new ArgumentException("Client with this INN already exists");
-            Client client=new Client(name,GetNewClientId(),inn);
+            Client client=new Client(name, GetNewClientId(), inn);
             _repository.Add(client);
             return client;
         }
@@ -46,8 +46,9 @@ namespace Domain.Services
         {
             if (!VerifyId(id))
                 throw new ArgumentException("No client with this id");
-            return _repository.All().SingleOrDefault(x => x.Id == id);
+            return _repository.All().SingleOrDefault(client => client.Id == id);
         }
+        //тестить
         public List<Client> GetClients(int offset, int count)
         {
             if (offset < 0)
@@ -57,30 +58,23 @@ namespace Domain.Services
             if (count > 100)
                 count = 100;
             List<Client> clients = _repository.All().SkipWhile(x=>x.Id<offset).ToList();
-            clients.Sort(delegate (Client client1, Client client2)
-            { return client1.Name.CompareTo(client2.Name); });
+            clients = clients.Take(count).ToList();
+            clients.Sort((client1, client2) => client1.Name.CompareTo(client2.Name));
             return clients;
         }
-        public List<Bill> GetClientBills(int id, int offset, int count)
-        {
-            throw new NotImplementedException();
-        }
-
         public int GetNewClientId()
         {
-            return _repository.All().Max(x => x.Id) + 1;
+            return _repository.All().Max(client => client.Id) + 1;
         }
 
         public bool VerifyInn(string inn)
         {
-            return _repository.All().All(x => x.Inn != inn);
+            return _repository.All().All(client => client.Inn != inn);
         }
 
         public bool VerifyId(int id)
         {
-            return _repository.All().Any(x => x.Id == id);
+            return _repository.All().Any(client => client.Id == id);
         }
-
-
     }
 }

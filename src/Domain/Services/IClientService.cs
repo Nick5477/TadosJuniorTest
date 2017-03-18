@@ -10,7 +10,6 @@ namespace Domain.Services
         void DeleteClient(int id);
         Client GetClientById(int id);
         List<Client> GetClients(int offset, int count);
-        List<Bill> GetClientBills(int id, int offset, int count);
         int GetNewClientId();
         bool VerifyInn(string inn);
         bool VerifyId(int id);

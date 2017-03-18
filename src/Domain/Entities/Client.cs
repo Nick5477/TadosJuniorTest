@@ -4,8 +4,8 @@ namespace Domain.Entities
 {
     public class Client : IEntity
     {
-        public string Name { get; protected set; }
         public int Id { get; protected set; }
+        public string Name { get; protected set; }
         public string Inn { get; protected set; }
 
         public Client(string name,int id, string inn)

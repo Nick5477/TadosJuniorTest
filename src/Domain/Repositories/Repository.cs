@@ -7,7 +7,7 @@ namespace Domain.Repositories
     class Repository<TEntity>:IRepository<TEntity>
         where TEntity:IEntity
     {
-        private readonly List<TEntity> _list;
+        private readonly List<TEntity> _list=new List<TEntity>();
         public void Add(TEntity entity)
         {
             _list.Add(entity);
