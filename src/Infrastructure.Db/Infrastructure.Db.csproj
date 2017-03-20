@@ -72,10 +72,14 @@
   <ItemGroup>
     <Compile Include="Bill\Commands\AddBillCommand.cs" />
     <Compile Include="Bill\Commands\PayBillCommand.cs" />
+    <Compile Include="Bill\Queries\GetBillsQuery.cs" />
+    <Compile Include="Bill\Queries\GetClientBillsQuery.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="Client\Commands\AddClientCommand.cs" />
     <Compile Include="Client\Commands\ChangeClientNameCommand.cs" />
     <Compile Include="Client\Commands\DeleteClientCommand.cs" />
+    <Compile Include="Client\Queries\GetClientsQuery.cs" />
+    <Compile Include="Client\Queries\GetClientByIdQuery.cs" />
     <Compile Include="Commands\CommandBuilder.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\ICommandBuilder.cs" />
@@ -86,13 +90,13 @@
     <Compile Include="Queries\IQueryFactory.cs" />
     <Compile Include="Queries\IQueryFor.cs" />
     <Compile Include="Queries\QueryFor.cs" />
+    <Compile Include="Stat\Queries\GetAllBillsStatQuery.cs" />
+    <Compile Include="Stat\Queries\GetClientBillsStatQuery.cs" />
+    <Compile Include="Stat\Queries\GetPayedBillsSumQuery.cs" />
     <Compile Include="TypedFactory\TypedFactoryBase.cs" />
     <Compile Include="TypedFactory\TypedFactoryExtensions.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Bill\Queries\" />
-    <Folder Include="Client\Queries\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />

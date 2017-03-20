@@ -24,18 +24,7 @@ namespace Infrastructure.Db.Client.Commands
             using (SQLiteConnection conn = new SQLiteConnection(string.Format(@"Data Source={0};", databaseName)))
             {
                 conn.Open();
-                SQLiteCommand command =
-                    new SQLiteCommand(
-                        string.Format(
-                            @"DELETE FROM Bills WHERE ClientId=@id"), conn);
-                command.Parameters.AddWithValue("@id", commandContext.Id);
-                command.ExecuteNonQuery();
-                command.Parameters.Clear();
-
-                command =
-                    new SQLiteCommand(
-                        string.Format(
-                            @"DELETE FROM Clients WHERE Id=@id"), conn);
+                SQLiteCommand command = new SQLiteCommand(string.Format(@"DELETE FROM Clients WHERE Id=@id"), conn);
                 command.Parameters.AddWithValue("@id", commandContext.Id);
                 command.ExecuteNonQuery();
             }

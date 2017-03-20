@@ -9,28 +9,18 @@ namespace Domain.Services
 {
     class StatService:IStatService
     {
-        private readonly IBillService _billService;
         private readonly IClientService _clientService;
         private readonly IRepository<Bill> _billRepository;
-        private readonly IRepository<Client> _clientRepository;
 
-        public StatService(IBillService billService,
-            IClientService clientService,
-            IRepository<Bill> billRepository,
-            IRepository<Client> clientRepository)
+        public StatService(IClientService clientService,
+            IRepository<Bill> billRepository)
         {
-            if (billService==null)
-                throw new ArgumentNullException(nameof(billService));
             if (clientService==null)
                 throw new ArgumentNullException(nameof(clientService));
             if (billRepository==null)
                 throw new ArgumentNullException(nameof(billRepository));
-            if (clientRepository == null)
-                throw new ArgumentNullException(nameof(clientRepository));
-            _billService = billService;
             _clientService = clientService;
             _billRepository = billRepository;
-            _clientRepository = clientRepository;
         }
         //тестить
         public List<ClientPayedBillsSum> GetPayedBillsSum(int count, string startDateTime, string endDateTime)

@@ -5,8 +5,8 @@ namespace Domain.Services
 {
     public interface IStatService
     {
-        List<ClientPayedBillsSum> GetPayedBillsSum(int count, string StartDateTime, string EndDateTime);
-        ClientBillsStat GetClientBillsStat(int id, string StartDateTime, string EndDateTime);
+        List<ClientPayedBillsSum> GetPayedBillsSum(int count, string startDateTime, string endDateTime);
+        ClientBillsStat GetClientBillsStat(int id, string startDateTime, string endDateTime);
         BillsStat GetAllBillsStat();
     }
 }

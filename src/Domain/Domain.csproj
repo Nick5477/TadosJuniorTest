@@ -55,8 +55,11 @@
     <Compile Include="Entities\IEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\Criteria\EmptyCriterion.cs" />
+    <Compile Include="Queries\Criteria\GetBillsCriterion.cs" />
+    <Compile Include="Queries\Criteria\GetClientBillsCriterion.cs" />
     <Compile Include="Queries\Criteria\GetClientBillsStatCriterion.cs" />
     <Compile Include="Queries\Criteria\GetClientByIdCriterion.cs" />
+    <Compile Include="Queries\Criteria\GetClientsCriterion.cs" />
     <Compile Include="Queries\Criteria\GetPayedBillsSumCriterion.cs" />
     <Compile Include="Queries\Criteria\ICriterion.cs" />
     <Compile Include="Repositories\IRepository.cs" />
