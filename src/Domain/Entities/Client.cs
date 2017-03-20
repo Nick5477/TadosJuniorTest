@@ -8,7 +8,7 @@ namespace Domain.Entities
         public string Name { get; protected set; }
         public string Inn { get; protected set; }
 
-        public Client(string name,int id, string inn)
+        public Client(int id,string name, string inn)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name));

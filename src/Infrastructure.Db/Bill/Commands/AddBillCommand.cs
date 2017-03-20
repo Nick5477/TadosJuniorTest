@@ -1,18 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SQLite;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Domain.Commands.Contexts;
+using Domain.Services;
 using Infrastructure.Db.Commands;
 
 namespace Infrastructure.Db.Bill.Commands
 {
     class AddBillCommand:ICommand<AddBillCommandContext>
     {
+        private readonly IBillService _billService;
+
+        public AddBillCommand(IBillService billService)
+        {
+            if (billService==null)
+                throw new ArgumentNullException(nameof(billService));
+            _billService = billService;
+        }
         public void Execute(AddBillCommandContext commandContext)
         {
+            Domain.Entities.Bill bill=_billService.AddBill(commandContext.Sum, commandContext.ClientId);
+
             string databaseName = "database.db";
             using (SQLiteConnection conn = new SQLiteConnection(string.Format(@"Data Source={0};", databaseName)))
             {
@@ -21,11 +28,11 @@ namespace Infrastructure.Db.Bill.Commands
                     new SQLiteCommand(
                         string.Format(
                             @"INSERT INTO 'Bills' ('Id','Sum','Number','ClientId','CreatedAt') VALUES (@id, @sum, @number,@clid,@createdat);"), conn);
-                command.Parameters.AddWithValue("@id", commandContext.Id);
-                command.Parameters.AddWithValue("@sum", (int)commandContext.Sum);
-                command.Parameters.AddWithValue("@number", commandContext.Number);
-                command.Parameters.AddWithValue("@clid", commandContext.ClientId);
-                command.Parameters.AddWithValue("@createdat", commandContext.CreatedAt.ToString("s"));
+                command.Parameters.AddWithValue("@id", bill.Id);
+                command.Parameters.AddWithValue("@sum", (int)bill.Sum);
+                command.Parameters.AddWithValue("@number", bill.Number);
+                command.Parameters.AddWithValue("@clid", bill.ClientId);
+                command.Parameters.AddWithValue("@createdat", bill.CreatedAt.ToString("s"));
                 command.ExecuteNonQuery();
             }
         }

@@ -1,18 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SQLite;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Domain.Commands.Contexts;
+using Domain.Services;
 using Infrastructure.Db.Commands;
 
 namespace Infrastructure.Db.Bill.Commands
 {
     class PayBillCommand:ICommand<PayBillCommandContext>
     {
+        private readonly IBillService _billService;
+
+        public PayBillCommand(IBillService billService)
+        {
+            if (billService == null)
+                throw new ArgumentNullException(nameof(billService));
+            _billService = billService;
+        }
         public void Execute(PayBillCommandContext commandContext)
         {
+            DateTime payedDateTime = DateTime.UtcNow;
+            _billService.PayBill(commandContext.Id,payedDateTime);
+
             string databaseName = "database.db";
             using (SQLiteConnection conn = new SQLiteConnection(string.Format(@"Data Source={0};", databaseName)))
             {
@@ -22,7 +30,7 @@ namespace Infrastructure.Db.Bill.Commands
                         string.Format(
                             @"UPDATE Bills SET PayedAt=@payedat WHERE Id=@id;"), conn);
                 command.Parameters.AddWithValue("@id", commandContext.Id);
-                command.Parameters.AddWithValue("@payedat", DateTime.UtcNow.ToString("s"));
+                command.Parameters.AddWithValue("@payedat", payedDateTime.ToString("s"));
                 command.ExecuteNonQuery();
             }
         }

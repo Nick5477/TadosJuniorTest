@@ -1,18 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SQLite;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Domain.Commands.Contexts;
+using Domain.Services;
 using Infrastructure.Db.Commands;
 
 namespace Infrastructure.Db.Client.Commands
 {
     class ChangeClientNameCommand:ICommand<ChangeClientNameCommandContext>
     {
+        private readonly IClientService _clientService;
+
+        public ChangeClientNameCommand(IClientService clientService)
+        {
+            if (clientService==null)
+                throw new ArgumentNullException(nameof(clientService));
+            _clientService = clientService;
+        }
         public void Execute(ChangeClientNameCommandContext commandContext)
         {
+            Domain.Entities.Client client=_clientService.GetClientById(commandContext.Id);
+            _clientService.ChangeClientName(client,commandContext.NewName);
+
             string databaseName = "database.db";
             using (SQLiteConnection conn = new SQLiteConnection(string.Format(@"Data Source={0};", databaseName)))
             {

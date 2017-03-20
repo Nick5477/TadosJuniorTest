@@ -20,9 +20,11 @@ namespace Domain.Services
         {
             if (name=="")
                 throw new ArgumentException("Wrong client name");
+            if (!CheckCorrectInn(inn))
+                throw new ArgumentException("Incorect INN");
             if (!VerifyInn(inn))
                 throw new ArgumentException("Client with this INN already exists");
-            Client client=new Client(name, GetNewClientId(), inn);
+            Client client=new Client(GetNewClientId(), name, inn);
             _repository.Add(client);
             return client;
         }
@@ -31,6 +33,8 @@ namespace Domain.Services
         {
             if (client==null)
                 throw new ArgumentNullException(nameof(client));
+            if (client.Name == newName)
+                return;
             if (newName == "")
                 throw new ArgumentException("Wrong new client name");
             client.ChangeName(newName);
@@ -75,6 +79,13 @@ namespace Domain.Services
         public bool VerifyId(int id)
         {
             return _repository.All().Any(client => client.Id == id);
+        }
+
+        private bool CheckCorrectInn(string inn)
+        {
+            if (inn.Length != 10 || inn.Length != 12)
+                return false;
+            return inn.All(c => c <= '9' && c >= '0');
         }
     }
 }

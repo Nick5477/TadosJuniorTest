@@ -1,20 +1,25 @@
-﻿using Domain.Commands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using Domain.Commands.Contexts;
 using System.Data.SQLite;
 using Infrastructure.Db.Commands;
-using System.Data.SQLite.Generic;
+using Domain.Services;
 
 namespace Infrastructure.Db.Client.Commands
 {
     public class AddClientCommand : ICommand<AddClientCommandContext>
     {
+        private readonly IClientService _clientService;
+
+        public AddClientCommand(IClientService clientService)
+        {
+            if (clientService==null)
+                throw new ArgumentNullException(nameof(clientService));
+            _clientService = clientService;
+        }
         public void Execute(AddClientCommandContext commandContext)
         {
+            Domain.Entities.Client client=_clientService.AddClient(commandContext.Name, commandContext.Inn);
+
             string databaseName = "database.db";
             using (SQLiteConnection conn = new SQLiteConnection(string.Format(@"Data Source={0};",databaseName)))
             {
@@ -23,9 +28,9 @@ namespace Infrastructure.Db.Client.Commands
                     new SQLiteCommand(
                         string.Format(
                             @"INSERT INTO 'Clients' ('Id','Name','INN') VALUES (@id, @name, @inn);"), conn);
-                command.Parameters.AddWithValue("@id", commandContext.Id);
-                command.Parameters.AddWithValue("@name", commandContext.Name);
-                command.Parameters.AddWithValue("@inn", commandContext.Inn);
+                command.Parameters.AddWithValue("@id", client.Id);
+                command.Parameters.AddWithValue("@name", client.Name);
+                command.Parameters.AddWithValue("@inn", client.Inn);
                 command.ExecuteNonQuery();
             }
         }

@@ -21,7 +21,6 @@ namespace ConsoleApp
         {
             _commandBuilder.Execute(new AddClientCommandContext()
             {
-                Id = id,
                 Name = name,
                 Inn = inn
             });
@@ -44,14 +43,11 @@ namespace ConsoleApp
             });
         }
 
-        public void AddNewBill(int id, int clientId, decimal sum, int number, DateTime createdAt)
+        public void AddNewBill(int clientId, decimal sum)
         {
             _commandBuilder.Execute(new AddBillCommandContext()
             {
-                Id=id,
                 ClientId = clientId,
-                Number = number,
-                CreatedAt = createdAt,
                 Sum=sum
             });
         }
