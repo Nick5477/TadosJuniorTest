@@ -5,7 +5,7 @@ using Infrastructure.Db.Queries;
 
 namespace Infrastructure.Db.Client.Queries
 {
-    class GetClientByIdQuery:IQuery<GetClientByIdCriterion,Domain.Entities.Client>
+    public class GetClientByIdQuery:IQuery<GetClientByIdCriterion,Domain.Entities.Client>
     {
         private readonly IClientService _clientService;
 

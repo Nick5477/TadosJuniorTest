@@ -6,7 +6,7 @@ using Infrastructure.Db.Commands;
 
 namespace Infrastructure.Db.Client.Commands
 {
-    class ChangeClientNameCommand:ICommand<ChangeClientNameCommandContext>
+    public class ChangeClientNameCommand:ICommand<ChangeClientNameCommandContext>
     {
         private readonly IClientService _clientService;
 

@@ -6,7 +6,7 @@ using Domain.Repositories;
 
 namespace Domain.Services
 {
-    class ClientService:IClientService
+    public class ClientService:IClientService
     {
         private readonly IRepository<Client> _repository;
 
@@ -18,8 +18,8 @@ namespace Domain.Services
         }
         public Client AddClient(string name, string inn)
         {
-            if (name=="")
-                throw new ArgumentException("Wrong client name");
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentNullException(nameof(name));
             if (!CheckCorrectInn(inn))
                 throw new ArgumentException("Incorect INN");
             if (!VerifyInn(inn))
@@ -68,22 +68,28 @@ namespace Domain.Services
         }
         public int GetNewClientId()
         {
+            if (!_repository.All().Any())
+                return 1;
             return _repository.All().Max(client => client.Id) + 1;
         }
 
         public bool VerifyInn(string inn)
         {
+            if (!_repository.All().Any())
+                return true;
             return _repository.All().All(client => client.Inn != inn);
         }
 
         public bool VerifyId(int id)
         {
+            if (!_repository.All().Any())
+                return false;
             return _repository.All().Any(client => client.Id == id);
         }
 
         private bool CheckCorrectInn(string inn)
         {
-            if (inn.Length != 10 || inn.Length != 12)
+            if (inn.Length != 10 && inn.Length != 12)
                 return false;
             return inn.All(c => c <= '9' && c >= '0');
         }

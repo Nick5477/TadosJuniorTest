@@ -108,6 +108,5 @@ C:\Users\User\Documents\Visual Studio 2015\Projects\TadosJuniorTest\WebApplicati
 C:\Users\User\Documents\Visual Studio 2015\Projects\TadosJuniorTest\WebApplication\bin\ru\Microsoft.Owin.Security.Twitter.resources.dll
 C:\Users\User\Documents\Visual Studio 2015\Projects\TadosJuniorTest\WebApplication\bin\ru\Microsoft.Owin.Security.MicrosoftAccount.resources.dll
 C:\Users\User\Documents\Visual Studio 2015\Projects\TadosJuniorTest\WebApplication\bin\ru\System.Web.Http.Owin.resources.dll
-C:\Users\User\Documents\Visual Studio 2015\Projects\TadosJuniorTest\WebApplication\obj\Debug\WebApplication.csprojResolveAssemblyReference.cache
 C:\Users\User\Documents\Visual Studio 2015\Projects\TadosJuniorTest\WebApplication\obj\Debug\WebApplication.dll
 C:\Users\User\Documents\Visual Studio 2015\Projects\TadosJuniorTest\WebApplication\obj\Debug\WebApplication.pdb

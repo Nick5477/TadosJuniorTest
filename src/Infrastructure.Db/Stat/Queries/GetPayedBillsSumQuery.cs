@@ -7,7 +7,7 @@ using Infrastructure.Db.Queries;
 
 namespace Infrastructure.Db.Stat.Queries
 {
-    class GetPayedBillsSumQuery:IQuery<GetPayedBillsSumCriterion,IEnumerable<ClientPayedBillsSum>>
+    public class GetPayedBillsSumQuery:IQuery<GetPayedBillsSumCriterion,IEnumerable<ClientPayedBillsSum>>
     {
         private readonly IStatService _statService;
 

@@ -72,12 +72,14 @@
   <ItemGroup>
     <Compile Include="Bill\Commands\AddBillCommand.cs" />
     <Compile Include="Bill\Commands\PayBillCommand.cs" />
+    <Compile Include="Bill\Queries\GetAllBillsFromDbQuery.cs" />
     <Compile Include="Bill\Queries\GetBillsQuery.cs" />
     <Compile Include="Bill\Queries\GetClientBillsQuery.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="Client\Commands\AddClientCommand.cs" />
     <Compile Include="Client\Commands\ChangeClientNameCommand.cs" />
     <Compile Include="Client\Commands\DeleteClientCommand.cs" />
+    <Compile Include="Client\Queries\GetAllClientsFromDbQuery.cs" />
     <Compile Include="Client\Queries\GetClientsQuery.cs" />
     <Compile Include="Client\Queries\GetClientByIdQuery.cs" />
     <Compile Include="Commands\CommandBuilder.cs" />

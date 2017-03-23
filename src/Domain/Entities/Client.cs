@@ -10,10 +10,6 @@ namespace Domain.Entities
 
         public Client(int id,string name, string inn)
         {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentNullException(nameof(name));
-            if (inn.Length!=10 || inn.Length!=12 && CheckDigits(inn))
-                throw new ArgumentException("INN is incorrect!");
             Name = name;
             Id = id;
             Inn = inn;
@@ -22,18 +18,6 @@ namespace Domain.Entities
         public void ChangeName(string name)
         {
             Name = name;
-        }
-
-        private bool CheckDigits(string str)
-        {
-            for (int i = 0; i < str.Length; i++)
-            {
-                if (!Char.IsDigit(str, i))
-                {
-                    return false;
-                }
-            }
-            return true;
         }
     }
 }

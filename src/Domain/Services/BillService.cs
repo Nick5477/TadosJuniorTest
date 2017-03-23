@@ -6,7 +6,7 @@ using Domain.Repositories;
 
 namespace Domain.Services
 {
-    class BillService:IBillService
+    public class BillService:IBillService
     {
         private readonly IRepository<Bill> _repository;
         private readonly IClientService _clientService;
@@ -24,7 +24,7 @@ namespace Domain.Services
         {
             if (sum<0)
                 throw new ArgumentException("Bill sum should be not negative!");
-            if (_clientService.VerifyId(clientId) || clientId<=0)
+            if (!_clientService.VerifyId(clientId) || clientId<=0)
                 throw new NullReferenceException("Incorect client id!");
             DateTime createdAt=DateTime.UtcNow;
             Bill bill=new Bill(
@@ -42,7 +42,7 @@ namespace Domain.Services
                 throw new NullReferenceException(nameof(Bill));
             _repository.All().SingleOrDefault(bill=>bill.Id==id).Pay(payedAt);
         }
-        //тестить
+        //тестить OK
         public List<Bill> GetBills(int offset, int count)
         {
             if (offset < 0)
@@ -67,9 +67,11 @@ namespace Domain.Services
         
         public int GetNewBillId()
         {
+            if (!_repository.All().Any())
+                return 1;
             return _repository.All().Count() + 1;
         }
-        //тестить
+        //тестить OK
         public int GetNewBillNumber(int month,int year)
         {
             string mm = month.ToString("00");
@@ -79,9 +81,11 @@ namespace Domain.Services
                 bill => bill.DisplayNumber.StartsWith(mm+"."+yyyy)
                 )
                 .Max(bill=>bill.DisplayNumber);
-            return int.Parse(maxDisplayNumber) + 1;
+            if (maxDisplayNumber == null)
+                return 1;
+            return int.Parse(maxDisplayNumber.Substring(maxDisplayNumber.IndexOf("-")+1)) + 1;
         }
-        //тестить
+        //тестить OK
         public List<Bill> GetClientBills(int id, int offset, int count)
         {
             if (offset < 0)
@@ -113,10 +117,23 @@ namespace Domain.Services
         }
         private string DisplayNumberMonthYearReverse(string displayNumber)
         {
-            string year = displayNumber.Substring(2, 4);
-            displayNumber = displayNumber.Remove(1, 5);
+            string year = displayNumber.Substring(3, 4);
+            displayNumber = displayNumber.Remove(2, 5);
             displayNumber = displayNumber.Insert(0, year + ".");
             return displayNumber;
+        }
+        //OK
+        public DateTime StringToDateTime(string date)
+        {
+            DateTime dateTime=
+                new DateTime(
+                    int.Parse(date.Substring(0, 4)),
+                    int.Parse(date.Substring(5,2)),
+                    int.Parse(date.Substring(8,2)),
+                    int.Parse(date.Substring(11,2)),
+                    int.Parse(date.Substring(14,2)),
+                    int.Parse(date.Substring(17)));
+            return dateTime;
         }
     }
 }

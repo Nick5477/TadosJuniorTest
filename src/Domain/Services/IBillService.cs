@@ -12,5 +12,6 @@ namespace Domain.Services
         List<Bill> GetClientBills(int id, int offset, int count);
         int GetNewBillId();
         int GetNewBillNumber(int month,int year);
+        DateTime StringToDateTime(string date);
     }
 }

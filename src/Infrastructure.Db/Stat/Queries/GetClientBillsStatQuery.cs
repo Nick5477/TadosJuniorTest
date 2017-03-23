@@ -6,7 +6,7 @@ using Infrastructure.Db.Queries;
 
 namespace Infrastructure.Db.Stat.Queries
 {
-    class GetClientBillsStatQuery:IQuery<GetClientBillsStatCriterion,ClientBillsStat>
+    public class GetClientBillsStatQuery:IQuery<GetClientBillsStatCriterion,ClientBillsStat>
     {
         private readonly IStatService _statService;
 

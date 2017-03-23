@@ -14,6 +14,7 @@ namespace Domain.Entities
         public bool WasPayed => PayedAt.HasValue;
         public Bill(int id,decimal sum,int clientid, int number,DateTime createdAt)
         {
+            Id = id;
             Sum = sum;
             ClientId = clientid;
             Number = number;

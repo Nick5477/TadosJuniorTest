@@ -7,7 +7,7 @@ using Domain.Structures;
 
 namespace Domain.Services
 {
-    class StatService:IStatService
+    public class StatService:IStatService
     {
         private readonly IClientService _clientService;
         private readonly IRepository<Bill> _billRepository;

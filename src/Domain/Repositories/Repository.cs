@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Domain.Entities;
 
 namespace Domain.Repositories
 {
-    class Repository<TEntity>:IRepository<TEntity>
+    public class Repository<TEntity>:IRepository<TEntity>
         where TEntity:IEntity
     {
         private readonly List<TEntity> _list=new List<TEntity>();

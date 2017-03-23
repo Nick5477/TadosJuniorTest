@@ -6,7 +6,7 @@ using Infrastructure.Db.Commands;
 
 namespace Infrastructure.Db.Client.Commands
 {
-    class DeleteClientCommand:ICommand<DeleteClientCommandContext>
+    public class DeleteClientCommand:ICommand<DeleteClientCommandContext>
     {
         private readonly IClientService _clientService;
 
