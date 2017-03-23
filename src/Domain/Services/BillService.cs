@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Domain.Entities;
 using Domain.Repositories;
+using System.Text.RegularExpressions;
 
 namespace Domain.Services
 {
@@ -134,6 +135,12 @@ namespace Domain.Services
                     int.Parse(date.Substring(14,2)),
                     int.Parse(date.Substring(17)));
             return dateTime;
+        }
+        public bool VerifyDateTime(string date)
+        {
+            if (date == "")
+                return true;
+            return Regex.IsMatch(date, @"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}");
         }
     }
 }

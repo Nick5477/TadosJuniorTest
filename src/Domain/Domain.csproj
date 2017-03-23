@@ -71,7 +71,6 @@
     <Compile Include="Services\IStatService.cs" />
     <Compile Include="Services\StatService.cs" />
     <Compile Include="Structures\BillsStat.cs" />
-    <Compile Include="Structures\ClientBillsStat.cs" />
     <Compile Include="Structures\ClientPayedBillsSum.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

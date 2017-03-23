@@ -4,6 +4,7 @@ using Autofac;
 using Domain.Entities;
 using Domain.Repositories;
 using Domain.Services;
+using Domain.Structures;
 using Infrastructure.TypedFactory;
 using Infrastructure.Db.Client.Commands;
 using Infrastructure.Db.Queries;
@@ -55,10 +56,18 @@ namespace ConsoleApp
             //app.AddNewClient("dsd", "0000000000");
             //app.AddNewClient("dddddd", "0000000001");
             //app.AddNewBill(1, 100);
-            //app.AddNewBill(1, 1111);
+            //app.AddNewBill(2, 1111);
             //app.PayBill(1);
             IEnumerable<Bill> bills = app.GetBills(0, 100);
             IEnumerable<Bill> clientBills = app.GetClientBills(2,0, 100);
+            IEnumerable<Client> clients = app.GetClients(0, 100);
+            BillsStat billsStat = app.GetAllBillsStat();
+            IEnumerable<ClientPayedBillsSum> clientPayedBillsSums = 
+                app.GetPayedBillsSums(2, 
+                "",
+                "");
+            BillsStat clientStat=app.GetClientBillsStat(1, "", "");
+
             string s = "ss";
             //app.DeleteClient(1);
             container.Dispose();

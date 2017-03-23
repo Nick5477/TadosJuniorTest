@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Domain.Commands.Contexts;
 using Domain.Entities;
 using Domain.Queries.Criteria;
 using Domain.Repositories;
+using Domain.Structures;
 using Infrastructure.Db.Commands;
 using Infrastructure.Db.Queries;
 
@@ -108,6 +104,48 @@ namespace ConsoleApp
                     Id = id,
                     Offset = offset,
                     Count = count
+                });
+        }
+
+        public IEnumerable<Client> GetClients(int offset, int count)
+        {
+            return _queryBuilder
+                .For<IEnumerable<Client>>()
+                .With(new GetClientsCriterion()
+                {
+                    Offset = offset,
+                    Count = count
+                });
+        }
+
+        public BillsStat GetAllBillsStat()
+        {
+            return _queryBuilder
+                .For<BillsStat>()
+                .With(new EmptyCriterion());
+        }
+
+        public IEnumerable<ClientPayedBillsSum> GetPayedBillsSums(int count,string startDateTime, string endDateTime)
+        {
+            return _queryBuilder
+                .For<IEnumerable<ClientPayedBillsSum>>()
+                .With(new GetPayedBillsSumCriterion()
+                {
+                    Count = count,
+                    StartDateTime = startDateTime,
+                    EndDateTime = endDateTime
+                });
+        }
+
+        public BillsStat GetClientBillsStat(int id, string startDateTime, string endDateTime)
+        {
+            return _queryBuilder
+                .For<BillsStat>()
+                .With(new GetClientBillsStatCriterion()
+                {
+                    ClientId = id,
+                    StartDateTime = startDateTime,
+                    EndDateTime = endDateTime
                 });
         }
     }

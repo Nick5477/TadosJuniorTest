@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Domain.Queries.Criteria
+﻿namespace Domain.Queries.Criteria
 {
     public class GetPayedBillsSumCriterion:ICriterion
     {

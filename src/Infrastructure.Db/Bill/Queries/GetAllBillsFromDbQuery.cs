@@ -38,6 +38,11 @@ namespace Infrastructure.Db.Bill.Queries
                         dataReader.GetInt32(3),
                         dataReader.GetInt32(2),
                         _billService.StringToDateTime(dataReader.GetString(4)));
+                    if (!dataReader.IsDBNull(5))
+                    {
+                        DateTime payedAt = _billService.StringToDateTime(dataReader.GetString(5));
+                        bill.Pay(payedAt);
+                    }
                     bills.Add(bill);
                 }
             }

@@ -11,20 +11,35 @@ namespace Domain.Services
     {
         private readonly IClientService _clientService;
         private readonly IRepository<Bill> _billRepository;
+        private readonly IBillService _billService;
 
         public StatService(IClientService clientService,
-            IRepository<Bill> billRepository)
+            IRepository<Bill> billRepository,
+            IBillService billService)
         {
             if (clientService==null)
                 throw new ArgumentNullException(nameof(clientService));
             if (billRepository==null)
                 throw new ArgumentNullException(nameof(billRepository));
+            if (billService==null)
+                throw new ArgumentNullException(nameof(billService));
             _clientService = clientService;
             _billRepository = billRepository;
+            _billService = billService;
         }
-        //тестить
+        //тестить OK
         public List<ClientPayedBillsSum> GetPayedBillsSum(int count, string startDateTime, string endDateTime)
         {
+            if (count < 0)
+                count = 0;
+            if (count > 100)
+                count = 100;
+            if (!_billService.VerifyDateTime(startDateTime))
+                throw new ArgumentException("Incorrect start datetime");
+            if (!_billService.VerifyDateTime(endDateTime))
+                throw new ArgumentException("Incorrect end datetime");
+            if (startDateTime.CompareTo(endDateTime)<0)
+                throw new ArgumentException("Start datetime after end datetime!");
             List<ClientPayedBillsSum> billsSumList = new List<ClientPayedBillsSum>();
             List<Bill> bills=new List<Bill>();
 
@@ -34,7 +49,15 @@ namespace Domain.Services
                     .All()
                     .Where(
                         bill =>
-                            bill.CreatedAt.CompareTo(startDateTime) <= 0 && bill.CreatedAt.CompareTo(endDateTime) >= 0
+                            bill
+                            .CreatedAt
+                            .ToString("s")
+                            .CompareTo(startDateTime) >= 0
+                            && 
+                            bill
+                            .CreatedAt
+                            .ToString("s")
+                            .CompareTo(endDateTime) <= 0
                     )
                     .ToList();
             }
@@ -44,7 +67,10 @@ namespace Domain.Services
                     .All()
                     .Where(
                         bill =>
-                           bill.CreatedAt.CompareTo(endDateTime) >= 0
+                           bill
+                           .CreatedAt
+                           .ToString("s")
+                           .CompareTo(endDateTime) <= 0
                     )
                     .ToList();
             }
@@ -54,7 +80,10 @@ namespace Domain.Services
                     .All()
                     .Where(
                         bill =>
-                            bill.CreatedAt.CompareTo(startDateTime) <= 0
+                            bill
+                            .CreatedAt
+                            .ToString("s")
+                            .CompareTo(startDateTime) >= 0
                     )
                     .ToList();
             }
@@ -75,14 +104,23 @@ namespace Domain.Services
                         .Sum(b => b.Sum);
                     clientPayedBills.Client = _clientService.GetClientById(bill.ClientId);
                     billsSumList.Add(clientPayedBills);
+                    usedClientId.Add(bill.ClientId);
                 }
             }
-            return billsSumList;
+            billsSumList.Sort((b1, b2) => -b1.Sum.CompareTo(b2.Sum));
+            return billsSumList.Take(count).ToList();
         }
-        //тестить
-        public ClientBillsStat GetClientBillsStat(int id, string startDateTime, string endDateTime)
+        //тестить OK
+        public BillsStat GetClientBillsStat(int id, string startDateTime, string endDateTime)
         {
-            //throw new NotImplementedException();
+            if (!_clientService.VerifyId(id))
+                throw new ArgumentException("No client with this id");
+            if (!_billService.VerifyDateTime(startDateTime))
+                throw new ArgumentException("Incorrect start datetime");
+            if (!_billService.VerifyDateTime(endDateTime))
+                throw new ArgumentException("Incorrect end datetime");
+            if (startDateTime.CompareTo(endDateTime) < 0)
+                throw new ArgumentException("Start datetime after end datetime!");
             List<Bill> bills = new List<Bill>();
             if (startDateTime != "" && endDateTime != "")
             {
@@ -90,7 +128,17 @@ namespace Domain.Services
                     .All()
                     .Where(
                         bill =>
-                            bill.CreatedAt.CompareTo(startDateTime) <= 0 && bill.CreatedAt.CompareTo(endDateTime) >= 0 && bill.ClientId==id
+                            bill
+                            .CreatedAt
+                            .ToString("s")
+                            .CompareTo(startDateTime) >= 0
+                            && 
+                            bill
+                            .CreatedAt
+                            .ToString("s")
+                            .CompareTo(endDateTime) <= 0
+                            && 
+                            bill.ClientId==id
                     )
                     .ToList();
             }
@@ -100,7 +148,12 @@ namespace Domain.Services
                     .All()
                     .Where(
                         bill =>
-                           bill.CreatedAt.CompareTo(endDateTime) >= 0 && bill.ClientId == id
+                           bill
+                           .CreatedAt
+                           .ToString("s")
+                           .CompareTo(endDateTime) <= 0
+                           &&
+                           bill.ClientId == id
                     )
                     .ToList();
             }
@@ -110,7 +163,12 @@ namespace Domain.Services
                     .All()
                     .Where(
                         bill =>
-                            bill.CreatedAt.CompareTo(startDateTime) <= 0 && bill.ClientId == id
+                            bill
+                            .CreatedAt
+                            .ToString("s")
+                            .CompareTo(startDateTime) >= 0
+                            &&
+                            bill.ClientId == id
                     )
                     .ToList();
             }
@@ -125,7 +183,7 @@ namespace Domain.Services
                     )
                     .ToList();
             }
-            ClientBillsStat clientBillsStat=new ClientBillsStat();
+            BillsStat clientBillsStat=new BillsStat();
             clientBillsStat.TotalCount = bills.Count;
             clientBillsStat.PayedCount = bills.Count(bill => bill.WasPayed);
             clientBillsStat.UnpayedCount = clientBillsStat.TotalCount - clientBillsStat.PayedCount;
@@ -134,7 +192,7 @@ namespace Domain.Services
             clientBillsStat.UnpayedSum = clientBillsStat.TotalSum - clientBillsStat.PayedSum;
             return clientBillsStat;
         }
-        //тестить
+        //тестить OK
         public BillsStat GetAllBillsStat()
         {
             BillsStat billsStat=new BillsStat();

@@ -6,7 +6,7 @@ using Infrastructure.Db.Queries;
 
 namespace Infrastructure.Db.Stat.Queries
 {
-    public class GetClientBillsStatQuery:IQuery<GetClientBillsStatCriterion,ClientBillsStat>
+    public class GetClientBillsStatQuery:IQuery<GetClientBillsStatCriterion,BillsStat>
     {
         private readonly IStatService _statService;
 
@@ -16,9 +16,9 @@ namespace Infrastructure.Db.Stat.Queries
                 throw new ArgumentNullException(nameof(statService));
             _statService = statService;
         }
-        public ClientBillsStat Ask(GetClientBillsStatCriterion criterion)
+        public BillsStat Ask(GetClientBillsStatCriterion criterion)
         {
-            ClientBillsStat clientBillsStat=
+            BillsStat clientBillsStat=
                 _statService
                 .GetClientBillsStat(
                     criterion.ClientId,

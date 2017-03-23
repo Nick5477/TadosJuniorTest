@@ -13,5 +13,6 @@ namespace Domain.Services
         int GetNewBillId();
         int GetNewBillNumber(int month,int year);
         DateTime StringToDateTime(string date);
+        bool VerifyDateTime(string date);
     }
 }

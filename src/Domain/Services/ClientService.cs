@@ -52,7 +52,7 @@ namespace Domain.Services
                 throw new ArgumentException("No client with this id");
             return _repository.All().SingleOrDefault(client => client.Id == id);
         }
-        //тестить
+        //тестить OK
         public List<Client> GetClients(int offset, int count)
         {
             if (offset < 0)

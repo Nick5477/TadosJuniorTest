@@ -1,5 +1,4 @@
-﻿using Domain.Commands;
-using Domain.Commands.Contexts;
+﻿using Domain.Commands.Contexts;
 
 namespace Infrastructure.Db.Commands
 {
