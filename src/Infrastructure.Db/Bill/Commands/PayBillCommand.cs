@@ -21,7 +21,8 @@ namespace Infrastructure.Db.Bill.Commands
             DateTime payedDateTime = DateTime.UtcNow;
             _billService.PayBill(commandContext.Id,payedDateTime);
 
-            string databaseName = "database.db";
+            string databaseName =
+                @"C:\Users\User\Documents\Visual Studio 2015\Projects\TadosJuniorTest\src\WebApp\bin\database.db";
             using (SQLiteConnection conn = new SQLiteConnection(string.Format(@"Data Source={0};", databaseName)))
             {
                 conn.Open();

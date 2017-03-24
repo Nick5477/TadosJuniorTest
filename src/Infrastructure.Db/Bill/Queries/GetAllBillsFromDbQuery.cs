@@ -19,7 +19,8 @@ namespace Infrastructure.Db.Bill.Queries
         }
         public IEnumerable<Domain.Entities.Bill> Ask(EmptyCriterion criterion)
         {
-            string databaseName = "database.db";
+            string databaseName =
+                @"C:\Users\User\Documents\Visual Studio 2015\Projects\TadosJuniorTest\src\WebApp\bin\database.db";
             List<Domain.Entities.Bill> bills = new List<Domain.Entities.Bill>();
             using (SQLiteConnection conn = new SQLiteConnection(string.Format(@"Data Source={0};", databaseName)))
             {

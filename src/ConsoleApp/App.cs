@@ -9,7 +9,7 @@ using Infrastructure.Db.Queries;
 
 namespace ConsoleApp
 {
-    class App
+    public class App
     {
         private readonly ICommandBuilder _commandBuilder;
         private readonly IQueryBuilder _queryBuilder;

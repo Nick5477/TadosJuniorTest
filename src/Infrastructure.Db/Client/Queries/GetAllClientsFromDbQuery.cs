@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.SQLite;
+using System.IO;
 using Domain.Queries.Criteria;
 using Infrastructure.Db.Queries;
 
@@ -9,7 +10,8 @@ namespace Infrastructure.Db.Client.Queries
     {
         public IEnumerable<Domain.Entities.Client> Ask(EmptyCriterion criterion)
         {
-            string databaseName = "database.db";
+            string databaseName = 
+                @"C:\Users\User\Documents\Visual Studio 2015\Projects\TadosJuniorTest\src\WebApp\bin\database.db";
             List<Domain.Entities.Client> clients=new List<Domain.Entities.Client>();
             using (SQLiteConnection conn = new SQLiteConnection(string.Format(@"Data Source={0};", databaseName)))
             {
