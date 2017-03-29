@@ -8,7 +8,7 @@ using Domain.Structures;
 using Infrastructure.TypedFactory;
 using Infrastructure.Db.Client.Commands;
 using Infrastructure.Db.Queries;
-using Infrastructure.Db.Stat.Queries;
+using Infrastructure.Db.Stats.Queries;
 
 namespace ConsoleApp
 {
@@ -24,8 +24,8 @@ namespace ConsoleApp
                 .RegisterType<BillService>()
                 .As<IBillService>();
             containerBuilder
-                .RegisterType<StatService>()
-                .As<IStatService>();
+                .RegisterType<StatsService>()
+                .As<IStatsService>();
 
             containerBuilder
                 .RegisterGeneric(typeof(Repository<>))
@@ -68,7 +68,6 @@ namespace ConsoleApp
                 "");
             BillsStat clientStat=app.GetClientBillsStat(1, "", "");
 
-            string s = "ss";
             //app.DeleteClient(1);
             container.Dispose();
         }

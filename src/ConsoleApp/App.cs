@@ -55,7 +55,7 @@ namespace ConsoleApp
             _commandBuilder.Execute(new ChangeClientNameCommandContext()
             {
                 Id=id,
-                NewName = newName
+                Name = newName
             });
         }
 

@@ -92,9 +92,9 @@
     <Compile Include="Queries\IQueryFactory.cs" />
     <Compile Include="Queries\IQueryFor.cs" />
     <Compile Include="Queries\QueryFor.cs" />
-    <Compile Include="Stat\Queries\GetAllBillsStatQuery.cs" />
-    <Compile Include="Stat\Queries\GetClientBillsStatQuery.cs" />
-    <Compile Include="Stat\Queries\GetPayedBillsSumQuery.cs" />
+    <Compile Include="Stats\Queries\GetAllBillsStatQuery.cs" />
+    <Compile Include="Stats\Queries\GetClientBillsStatQuery.cs" />
+    <Compile Include="Stats\Queries\GetPayedBillsSumQuery.cs" />
     <Compile Include="TypedFactory\TypedFactoryBase.cs" />
     <Compile Include="TypedFactory\TypedFactoryExtensions.cs" />
   </ItemGroup>

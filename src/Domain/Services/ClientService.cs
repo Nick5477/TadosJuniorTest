@@ -48,9 +48,7 @@ namespace Domain.Services
 
         public Client GetClientById(int id)
         {
-            if (!VerifyId(id))
-                throw new ArgumentException("No client with this id");
-            return _repository.All().SingleOrDefault(client => client.Id == id);
+            return !VerifyId(id) ? null : _repository.All().SingleOrDefault(client => client.Id == id);
         }
         //тестить OK
         public List<Client> GetClients(int offset, int count)

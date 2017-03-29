@@ -7,13 +7,13 @@ using Domain.Structures;
 
 namespace Domain.Services
 {
-    public class StatService:IStatService
+    public class StatsService:IStatsService
     {
         private readonly IClientService _clientService;
         private readonly IRepository<Bill> _billRepository;
         private readonly IBillService _billService;
 
-        public StatService(IClientService clientService,
+        public StatsService(IClientService clientService,
             IRepository<Bill> billRepository,
             IBillService billService)
         {

@@ -4,13 +4,13 @@ using Domain.Services;
 using Domain.Structures;
 using Infrastructure.Db.Queries;
 
-namespace Infrastructure.Db.Stat.Queries
+namespace Infrastructure.Db.Stats.Queries
 {
     public class GetClientBillsStatQuery:IQuery<GetClientBillsStatCriterion,BillsStat>
     {
-        private readonly IStatService _statService;
+        private readonly IStatsService _statService;
 
-        public GetClientBillsStatQuery(IStatService statService)
+        public GetClientBillsStatQuery(IStatsService statService)
         {
             if (statService==null)
                 throw new ArgumentNullException(nameof(statService));

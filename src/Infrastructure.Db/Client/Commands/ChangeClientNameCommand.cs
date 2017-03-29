@@ -19,7 +19,7 @@ namespace Infrastructure.Db.Client.Commands
         public void Execute(ChangeClientNameCommandContext commandContext)
         {
             Domain.Entities.Client client=_clientService.GetClientById(commandContext.Id);
-            _clientService.ChangeClientName(client,commandContext.NewName);
+            _clientService.ChangeClientName(client,commandContext.Name);
 
             string databaseName =
                 @"C:\Users\User\Documents\Visual Studio 2015\Projects\TadosJuniorTest\src\WebApp\bin\database.db";
@@ -31,7 +31,7 @@ namespace Infrastructure.Db.Client.Commands
                         string.Format(
                             @"UPDATE Clients SET Name=@newname where Id=@id"), conn);
                 command.Parameters.AddWithValue("@id", commandContext.Id);
-                command.Parameters.AddWithValue("@newname", commandContext.NewName);
+                command.Parameters.AddWithValue("@newname", commandContext.Name);
                 command.ExecuteNonQuery();
             }
         }

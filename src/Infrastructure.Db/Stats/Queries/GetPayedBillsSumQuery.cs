@@ -5,13 +5,13 @@ using Domain.Services;
 using Domain.Structures;
 using Infrastructure.Db.Queries;
 
-namespace Infrastructure.Db.Stat.Queries
+namespace Infrastructure.Db.Stats.Queries
 {
     public class GetPayedBillsSumQuery:IQuery<GetPayedBillsSumCriterion,IEnumerable<ClientPayedBillsSum>>
     {
-        private readonly IStatService _statService;
+        private readonly IStatsService _statService;
 
-        public GetPayedBillsSumQuery(IStatService statService)
+        public GetPayedBillsSumQuery(IStatsService statService)
         {
             if(statService==null)
                 throw new ArgumentNullException(nameof(statService));
