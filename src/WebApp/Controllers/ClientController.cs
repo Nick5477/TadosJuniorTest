@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -18,7 +19,7 @@ namespace WebApp.Controllers
         public IQueryBuilder queryBuilder {get; set; }
         public ICommandBuilder commandBuilder { get; set; }
 
-        [HttpGet]
+        [HttpGet]//get
         public HttpResponseMessage List(JObject jsonData)
         {
             HttpResponseMessage response;
@@ -29,7 +30,7 @@ namespace WebApp.Controllers
                     queryBuilder
                         .For<IEnumerable<Client>>()
                         .With(criterion);
-                if (clients == null)
+                if (!clients.Any())
                     response = Request.CreateResponse(HttpStatusCode.BadRequest);
                 else
                     response = Request.CreateResponse(HttpStatusCode.OK, clients);
@@ -73,6 +74,7 @@ namespace WebApp.Controllers
         {
             HttpResponseMessage response=new HttpResponseMessage(HttpStatusCode.OK);
             var context=jsonData.ToObject<AddClientCommandContext>();
+            context.DatabasePath = HomeController.DatabasePath;
             try
             {
                 commandBuilder.Execute(context);
@@ -92,6 +94,7 @@ namespace WebApp.Controllers
             ChangeClientNameCommandContext context =
                 jsonData.ToObject<ChangeClientNameCommandContext>();
             context.Id = id;
+            context.DatabasePath = HomeController.DatabasePath;
             try
             {
                 commandBuilder.Execute(context);
@@ -107,13 +110,17 @@ namespace WebApp.Controllers
         public HttpResponseMessage Delete(int id)
         {
             HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+            DeleteClientCommandContext context = new DeleteClientCommandContext()
+            {
+                Id = id,
+                DatabasePath = HomeController.DatabasePath
+            };
             try
             {
                 commandBuilder
-                    .Execute(new DeleteClientCommandContext()
-                    {
-                        Id = id
-                    });
+                    .Execute(context);
+                if (!context.IsSuccess)
+                    response = Request.CreateResponse(HttpStatusCode.BadRequest);
             }
             catch(Exception ex)
             {
@@ -123,20 +130,22 @@ namespace WebApp.Controllers
             return response;
         }
 
-        [HttpGet]
+        [HttpGet]//get
         [Route("client/{id}/bills")]
         public HttpResponseMessage Bills(int id,JObject jsonData)
         {
             HttpResponseMessage response;
+            
             GetClientBillsCriterion criterion = 
                 jsonData
                 .ToObject<GetClientBillsCriterion>();
+            criterion.Id = id;
             try
             {
                 IEnumerable<Bill> bills = queryBuilder
                     .For<IEnumerable<Bill>>()
                     .With(criterion);
-                if (bills == null)
+                if (!bills.Any())
                     response = Request.CreateResponse(HttpStatusCode.BadRequest);
                 else
                     response = Request.CreateResponse(HttpStatusCode.OK, bills);

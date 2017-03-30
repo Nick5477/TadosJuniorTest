@@ -37,11 +37,12 @@ namespace Domain.Services
             _repository.Add(bill);
             return bill;
         }
-        public void PayBill(int id,DateTime payedAt)
+        public bool PayBill(int id,DateTime payedAt)
         {
-            if (GetNewBillId()<=id)
-                throw new NullReferenceException(nameof(Bill));
+            if (GetNewBillId() <= id)
+                return false;
             _repository.All().SingleOrDefault(bill=>bill.Id==id).Pay(payedAt);
+            return true;
         }
         //тестить OK
         public List<Bill> GetBills(int offset, int count)

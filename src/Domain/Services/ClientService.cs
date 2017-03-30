@@ -40,10 +40,13 @@ namespace Domain.Services
             client.ChangeName(newName);
         }
 
-        public void DeleteClient(int id)
+        public bool DeleteClient(int id)
         {
             Client client = GetClientById(id);
+            if (client == null)
+                return false;
             _repository.Delete(client);
+            return true;
         }
 
         public Client GetClientById(int id)

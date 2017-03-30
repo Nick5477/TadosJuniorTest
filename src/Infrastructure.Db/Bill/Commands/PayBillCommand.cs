@@ -19,10 +19,10 @@ namespace Infrastructure.Db.Bill.Commands
         public void Execute(PayBillCommandContext commandContext)
         {
             DateTime payedDateTime = DateTime.UtcNow;
-            _billService.PayBill(commandContext.Id,payedDateTime);
+            bool isSuccess=_billService.PayBill(commandContext.Id,payedDateTime);
+            commandContext.IsSuccess = isSuccess;
 
-            string databaseName =
-                @"C:\Users\User\Documents\Visual Studio 2015\Projects\TadosJuniorTest\src\WebApp\bin\database.db";
+            string databaseName = commandContext.DatabasePath;
             using (SQLiteConnection conn = new SQLiteConnection(string.Format(@"Data Source={0};", databaseName)))
             {
                 conn.Open();

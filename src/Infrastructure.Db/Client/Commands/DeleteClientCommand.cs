@@ -18,10 +18,11 @@ namespace Infrastructure.Db.Client.Commands
         }
         public void Execute(DeleteClientCommandContext commandContext)
         {
-            _clientService.DeleteClient(commandContext.Id);
+            bool isSuccess=_clientService.DeleteClient(commandContext.Id);
+            commandContext.IsSuccess = isSuccess;
 
-            string databaseName =
-                @"C:\Users\User\Documents\Visual Studio 2015\Projects\TadosJuniorTest\src\WebApp\bin\database.db";
+            string databaseName = commandContext.DatabasePath;
+
             using (SQLiteConnection conn = new SQLiteConnection(string.Format(@"Data Source={0};", databaseName)))
             {
                 conn.Open();

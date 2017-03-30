@@ -20,8 +20,7 @@ namespace Infrastructure.Db.Client.Commands
         {
             Domain.Entities.Client client=_clientService.AddClient(commandContext.Name, commandContext.Inn);
 
-            string databaseName =
-                @"C:\Users\User\Documents\Visual Studio 2015\Projects\TadosJuniorTest\src\WebApp\bin\database.db";
+            string databaseName = commandContext.DatabasePath;
             using (SQLiteConnection conn = new SQLiteConnection(string.Format(@"Data Source={0};",databaseName)))
             {
                 conn.Open();

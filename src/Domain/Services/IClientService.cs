@@ -7,7 +7,7 @@ namespace Domain.Services
     {
         Client AddClient(string name, string inn);
         void ChangeClientName(Client client, string newName);
-        void DeleteClient(int id);
+        bool DeleteClient(int id);
         Client GetClientById(int id);
         List<Client> GetClients(int offset, int count);
         int GetNewClientId();

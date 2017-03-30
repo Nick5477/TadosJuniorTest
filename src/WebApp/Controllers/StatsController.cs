@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -14,20 +15,30 @@ namespace WebApp.Controllers
     public class StatsController:ApiController
     {
         public IQueryBuilder queryBuilder { get; set; }
-        [HttpGet]
+
+        [HttpGet]//get
         public HttpResponseMessage PayedBillsSum(JObject jsonData)
         {
             HttpResponseMessage response;
+            string s = jsonData.ToString().Replace(" ","");
             GetPayedBillsSumCriterion criterion =
                 jsonData
                     .ToObject<GetPayedBillsSumCriterion>();
+            if (criterion.StartDateTime == null)
+                criterion.StartDateTime = "";
+            else
+                criterion.StartDateTime = s.Substring(s.IndexOf("StartDateTime") + "StartDateTime".Length + 3, 19);
+            if (criterion.EndDateTime == null)
+                criterion.EndDateTime = "";
+            else
+                criterion.EndDateTime = s.Substring(s.IndexOf("EndDateTime") + "EndDateTime".Length + 3, 19);
             try
             {
                 IEnumerable<ClientPayedBillsSum> clientBillsSums =
                     queryBuilder
                         .For<IEnumerable<ClientPayedBillsSum>>()
                         .With(criterion);
-                if (clientBillsSums == null)
+                if (!clientBillsSums.Any())
                     response = Request.CreateResponse(HttpStatusCode.BadRequest);
                 else
                     response = Request.CreateResponse(HttpStatusCode.OK, clientBillsSums);
@@ -59,12 +70,24 @@ namespace WebApp.Controllers
             }
             return response;
         }
-        [HttpGet]
+
+        [HttpGet]//get
+        [Route("stats/client/{id}/bills")]
         public HttpResponseMessage GetClientBillsStat(int id,JObject jsonData)
         {
             HttpResponseMessage response;
+            string s = jsonData.ToString().Replace(" ","");
             GetClientBillsStatCriterion criterion =
                 jsonData.ToObject<GetClientBillsStatCriterion>();
+            criterion.ClientId = id;
+            if (criterion.StartDateTime == null)
+                criterion.StartDateTime = "";
+            else
+                criterion.StartDateTime = s.Substring(s.IndexOf("StartDateTime") + "StartDateTime".Length + 3, 19);
+            if (criterion.EndDateTime == null)
+                criterion.EndDateTime = "";
+            else
+                criterion.EndDateTime = s.Substring(s.IndexOf("EndDateTime") + "EndDateTime".Length + 3, 19);
             try
             {
                 BillsStat clientBillsStat =

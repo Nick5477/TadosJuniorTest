@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -22,6 +23,7 @@ namespace WebApp.Controllers
         {
             HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
             AddBillCommandContext context = jsonData.ToObject<AddBillCommandContext>();
+            context.DatabasePath = HomeController.DatabasePath;
             try
             {
                 commandBuilder.Execute(context);
@@ -38,13 +40,17 @@ namespace WebApp.Controllers
         public HttpResponseMessage Pay(int id)
         {
             HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+            PayBillCommandContext context = new PayBillCommandContext()
+            {
+                Id = id,
+                DatabasePath = HomeController.DatabasePath
+            };
             try
             {
                 commandBuilder
-                    .Execute(new PayBillCommandContext()
-                    {
-                        Id = id
-                    });
+                    .Execute(context);
+                if (!context.IsSuccess)
+                    response = Request.CreateResponse(HttpStatusCode.BadRequest);
             }
             catch (Exception ex)
             {
@@ -53,7 +59,7 @@ namespace WebApp.Controllers
             }
             return response;
         }
-        [HttpGet]
+        [HttpGet]//get
         public HttpResponseMessage List(JObject jsonData)
         {
             HttpResponseMessage response;
@@ -64,7 +70,7 @@ namespace WebApp.Controllers
                     queryBuilder
                         .For<IEnumerable<Bill>>()
                         .With(criterion);
-                if (bills == null)
+                if (!bills.Any())
                     response = Request.CreateResponse(HttpStatusCode.BadRequest);
                 else
                     response = Request.CreateResponse(HttpStatusCode.OK, bills);

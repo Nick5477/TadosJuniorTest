@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.SQLite;
+using System.IO;
 using Domain.Commands.Contexts;
 using Domain.Services;
 using Infrastructure.Db.Commands;
@@ -20,8 +21,7 @@ namespace Infrastructure.Db.Bill.Commands
         {
             Domain.Entities.Bill bill=_billService.AddBill(commandContext.Sum, commandContext.ClientId);
 
-            string databaseName =
-                @"C:\Users\User\Documents\Visual Studio 2015\Projects\TadosJuniorTest\src\WebApp\bin\database.db";
+            string databaseName = commandContext.DatabasePath;
             using (SQLiteConnection conn = new SQLiteConnection(string.Format(@"Data Source={0};", databaseName)))
             {
                 conn.Open();

@@ -2,3 +2,4 @@ C:\Users\User\Documents\Visual Studio 2015\Projects\TadosJuniorTest\src\Domain\b
 C:\Users\User\Documents\Visual Studio 2015\Projects\TadosJuniorTest\src\Domain\bin\Debug\Domain.pdb
 C:\Users\User\Documents\Visual Studio 2015\Projects\TadosJuniorTest\src\Domain\obj\Debug\Domain.dll
 C:\Users\User\Documents\Visual Studio 2015\Projects\TadosJuniorTest\src\Domain\obj\Debug\Domain.pdb
+C:\Users\User\documents\visual studio 2015\Projects\TadosJuniorTest\src\Domain\obj\Debug\Domain.csprojResolveAssemblyReference.cache

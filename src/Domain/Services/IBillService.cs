@@ -7,7 +7,7 @@ namespace Domain.Services
     public interface IBillService
     {
         Bill AddBill(decimal sum, int clientId);
-        void PayBill(int id,DateTime createdAt);
+        bool PayBill(int id,DateTime createdAt);
         List<Bill> GetBills(int offset, int count);
         List<Bill> GetClientBills(int id, int offset, int count);
         int GetNewBillId();

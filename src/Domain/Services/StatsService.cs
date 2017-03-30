@@ -38,7 +38,7 @@ namespace Domain.Services
                 throw new ArgumentException("Incorrect start datetime");
             if (!_billService.VerifyDateTime(endDateTime))
                 throw new ArgumentException("Incorrect end datetime");
-            if (startDateTime.CompareTo(endDateTime)<0)
+            if (startDateTime.CompareTo(endDateTime) > 0 && startDateTime != "" && endDateTime != "")
                 throw new ArgumentException("Start datetime after end datetime!");
             List<ClientPayedBillsSum> billsSumList = new List<ClientPayedBillsSum>();
             List<Bill> bills=new List<Bill>();
@@ -119,7 +119,7 @@ namespace Domain.Services
                 throw new ArgumentException("Incorrect start datetime");
             if (!_billService.VerifyDateTime(endDateTime))
                 throw new ArgumentException("Incorrect end datetime");
-            if (startDateTime.CompareTo(endDateTime) < 0)
+            if (startDateTime.CompareTo(endDateTime) > 0 && startDateTime!="" && endDateTime!="")
                 throw new ArgumentException("Start datetime after end datetime!");
             List<Bill> bills = new List<Bill>();
             if (startDateTime != "" && endDateTime != "")
