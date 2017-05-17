@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Domain.Entities;
 using Domain.Repositories;
 using Domain.Structures;
@@ -27,16 +28,15 @@ namespace Domain.Services
             _billRepository = billRepository;
             _billService = billService;
         }
-        //тестить OK
         public List<ClientPayedBillsSum> GetPayedBillsSum(int count, string startDateTime, string endDateTime)
         {
             if (count < 0)
                 count = 0;
             if (count > 100)
                 count = 100;
-            if (!_billService.VerifyDateTime(startDateTime))
+            if (VerifyDateTime(startDateTime))
                 throw new ArgumentException("Incorrect start datetime");
-            if (!_billService.VerifyDateTime(endDateTime))
+            if (VerifyDateTime(endDateTime))
                 throw new ArgumentException("Incorrect end datetime");
             if (startDateTime.CompareTo(endDateTime) > 0 && startDateTime != "" && endDateTime != "")
                 throw new ArgumentException("Start datetime after end datetime!");
@@ -110,14 +110,13 @@ namespace Domain.Services
             billsSumList.Sort((b1, b2) => -b1.Sum.CompareTo(b2.Sum));
             return billsSumList.Take(count).ToList();
         }
-        //тестить OK
         public BillsStat GetClientBillsStat(int id, string startDateTime, string endDateTime)
         {
             if (!_clientService.VerifyId(id))
                 throw new ArgumentException("No client with this id");
-            if (!_billService.VerifyDateTime(startDateTime))
+            if (!VerifyDateTime(startDateTime))
                 throw new ArgumentException("Incorrect start datetime");
-            if (!_billService.VerifyDateTime(endDateTime))
+            if (!VerifyDateTime(endDateTime))
                 throw new ArgumentException("Incorrect end datetime");
             if (startDateTime.CompareTo(endDateTime) > 0 && startDateTime!="" && endDateTime!="")
                 throw new ArgumentException("Start datetime after end datetime!");
@@ -192,7 +191,6 @@ namespace Domain.Services
             clientBillsStat.UnpayedSum = clientBillsStat.TotalSum - clientBillsStat.PayedSum;
             return clientBillsStat;
         }
-        //тестить OK
         public BillsStat GetAllBillsStat()
         {
             BillsStat billsStat=new BillsStat();
@@ -203,6 +201,12 @@ namespace Domain.Services
             billsStat.UnpayedCount = billsStat.TotalCount - billsStat.PayedCount;
             billsStat.UnpayedSum = billsStat.TotalSum - billsStat.PayedSum;
             return billsStat;
+        }
+        private bool VerifyDateTime(string date)
+        {
+            if (date == "")
+                return true;
+            return Regex.IsMatch(date, @"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}");
         }
     }
 }

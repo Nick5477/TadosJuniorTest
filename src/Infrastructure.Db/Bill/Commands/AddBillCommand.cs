@@ -19,22 +19,42 @@ namespace Infrastructure.Db.Bill.Commands
         }
         public void Execute(AddBillCommandContext commandContext)
         {
-            Domain.Entities.Bill bill=_billService.AddBill(commandContext.Sum, commandContext.ClientId);
 
             string databaseName = commandContext.DatabasePath;
             using (SQLiteConnection conn = new SQLiteConnection(string.Format(@"Data Source={0};", databaseName)))
             {
                 conn.Open();
+
+                DateTime createdAt=DateTime.UtcNow;
+
+                SQLiteCommand getNewBillNumberQuery=
+                    new SQLiteCommand(
+                        string.Format(
+                            @"select COUNT(NUMBER) from bills where CreatedAt LIKE @yearMonth + '%' "), conn);
+                getNewBillNumberQuery.Parameters.AddWithValue("@yearMonth",
+                    $"{createdAt.Year:0000}-{createdAt.Month:00}");
+                int number = (int)getNewBillNumberQuery.ExecuteScalar()+1;
+
+
                 SQLiteCommand command =
                     new SQLiteCommand(
                         string.Format(
-                            @"INSERT INTO 'Bills' ('Id','Sum','Number','ClientId','CreatedAt') VALUES (@id, @sum, @number,@clid,@createdat);"), conn);
-                command.Parameters.AddWithValue("@id", bill.Id);
-                command.Parameters.AddWithValue("@sum", (int)bill.Sum);
-                command.Parameters.AddWithValue("@number", bill.Number);
-                command.Parameters.AddWithValue("@clid", bill.ClientId);
-                command.Parameters.AddWithValue("@createdat", bill.CreatedAt.ToString("s"));
+                            @"INSERT INTO 'Bills' ('Sum','Number','ClientId','CreatedAt') VALUES (@sum, @number,@clid,@createdat);"), conn);
+                command.Parameters.AddWithValue("@sum", commandContext.Sum);
+                command.Parameters.AddWithValue("@number", number);
+                command.Parameters.AddWithValue("@clid", commandContext.ClientId);
+                command.Parameters.AddWithValue("@createdat", createdAt.ToString("s"));
                 command.ExecuteNonQuery();
+
+                SQLiteCommand getNewBillIdQuery =
+                    new SQLiteCommand(
+                        string.Format(
+                            @"SELECT Id FROM Bills WHERE Number=@number AND CreatedAt=@createdat), conn);"));
+                getNewBillIdQuery.Parameters.AddWithValue("@number", number);
+                getNewBillIdQuery.Parameters.AddWithValue("@createdat", createdAt.ToString("s"));
+                int id = (int) getNewBillIdQuery.ExecuteScalar();
+
+                _billService.AddBill(id,number, commandContext.Sum, commandContext.ClientId, createdAt);
             }
         }
     }

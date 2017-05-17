@@ -18,20 +18,34 @@ namespace Infrastructure.Db.Client.Commands
         }
         public void Execute(AddClientCommandContext commandContext)
         {
-            Domain.Entities.Client client=_clientService.AddClient(commandContext.Name, commandContext.Inn);
-
             string databaseName = commandContext.DatabasePath;
             using (SQLiteConnection conn = new SQLiteConnection(string.Format(@"Data Source={0};",databaseName)))
             {
                 conn.Open();
+                SQLiteCommand verifyInnQuery =
+                    new SQLiteCommand(
+                        string.Format(
+                            @"SELECT * FROM Clients WHERE Inn=@inn"), conn);
+                verifyInnQuery.Parameters.AddWithValue("@inn", commandContext.Inn);
+                SQLiteDataReader dataReader = verifyInnQuery.ExecuteReader();
+                if (dataReader.HasRows)
+                    throw new ArgumentException("Client with this INN already exists");
+
                 SQLiteCommand command =
                     new SQLiteCommand(
                         string.Format(
-                            @"INSERT INTO 'Clients' ('Id','Name','INN') VALUES (@id, @name, @inn);"), conn);
-                command.Parameters.AddWithValue("@id", client.Id);
-                command.Parameters.AddWithValue("@name", client.Name);
-                command.Parameters.AddWithValue("@inn", client.Inn);
+                            @"INSERT INTO 'Clients' ('Name','INN') VALUES (@name, @inn);"), conn);
+                command.Parameters.AddWithValue("@name", commandContext.Name);
+                command.Parameters.AddWithValue("@inn", commandContext.Inn);
                 command.ExecuteNonQuery();
+
+                SQLiteCommand query =
+                    new SQLiteCommand(
+                        string.Format(
+                            @"SELECT Id FROM Clients WHERE Inn=@inn"), conn);
+                query.Parameters.AddWithValue("@inn", commandContext.Inn);
+                int id=(int)query.ExecuteScalar();
+                _clientService.AddClient(id, commandContext.Name, commandContext.Inn);
             }
         }
     }

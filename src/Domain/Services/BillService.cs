@@ -21,30 +21,26 @@ namespace Domain.Services
             _repository = repository;
             _clientService = clientService;
         }
-        public Bill AddBill(decimal sum, int clientId)
+        public Bill AddBill(int id, int number, decimal sum, int clientId,DateTime createdAt)
         {
-            if (sum<0)
-                throw new ArgumentException("Bill sum should be not negative!");
             if (!_clientService.VerifyId(clientId) || clientId<=0)
                 throw new NullReferenceException("Incorect client id!");
-            DateTime createdAt=DateTime.UtcNow;
             Bill bill=new Bill(
-                GetNewBillId(),
+                id,
                 sum,
                 clientId,
-                GetNewBillNumber(createdAt.Month, createdAt.Year),
+                number,
                 createdAt);
             _repository.Add(bill);
             return bill;
         }
         public bool PayBill(int id,DateTime payedAt)
         {
-            if (GetNewBillId() <= id)
+            if (_repository.All().All(bill => bill.Id != id))//если такого счета нет
                 return false;
             _repository.All().SingleOrDefault(bill=>bill.Id==id).Pay(payedAt);
             return true;
         }
-        //тестить OK
         public List<Bill> GetBills(int offset, int count)
         {
             if (offset < 0)
@@ -62,32 +58,10 @@ namespace Domain.Services
                 .ToList();
             bills
                 .Sort(
-                (bill1, bill2)=> 
-                BillsCompareByDisplayNumber(bill1.DisplayNumber, bill2.DisplayNumber));
+                (bill1, bill2)=>
+                        bill1.GetReverseDisplayNumber().CompareTo(bill2.GetReverseDisplayNumber()));
             return bills;
         }
-        
-        public int GetNewBillId()
-        {
-            if (!_repository.All().Any())
-                return 1;
-            return _repository.All().Count() + 1;
-        }
-        //тестить OK
-        public int GetNewBillNumber(int month,int year)
-        {
-            string mm = month.ToString("00");
-            string yyyy = year.ToString("0000");
-            string maxDisplayNumber = _repository.All()
-                .Where(
-                bill => bill.DisplayNumber.StartsWith(mm+"."+yyyy)
-                )
-                .Max(bill=>bill.DisplayNumber);
-            if (maxDisplayNumber == null)
-                return 1;
-            return int.Parse(maxDisplayNumber.Substring(maxDisplayNumber.IndexOf("-")+1)) + 1;
-        }
-        //тестить OK
         public List<Bill> GetClientBills(int id, int offset, int count)
         {
             if (offset < 0)
@@ -108,23 +82,9 @@ namespace Domain.Services
             bills
                 .Sort(
                 (bill1, bill2) =>
-                BillsCompareByDisplayNumber(bill1.DisplayNumber, bill2.DisplayNumber));
+                bill1.GetReverseDisplayNumber().CompareTo(bill2.GetReverseDisplayNumber()));
             return bills;
         }
-        private int BillsCompareByDisplayNumber(string billDisplayNumber1, string billDisplayNumber2)
-        {
-            billDisplayNumber1 = DisplayNumberMonthYearReverse(billDisplayNumber1);
-            billDisplayNumber2 = DisplayNumberMonthYearReverse(billDisplayNumber2);
-            return billDisplayNumber1.CompareTo(billDisplayNumber2);
-        }
-        private string DisplayNumberMonthYearReverse(string displayNumber)
-        {
-            string year = displayNumber.Substring(3, 4);
-            displayNumber = displayNumber.Remove(2, 5);
-            displayNumber = displayNumber.Insert(0, year + ".");
-            return displayNumber;
-        }
-        //OK
         public DateTime StringToDateTime(string date)
         {
             DateTime dateTime=
@@ -136,12 +96,6 @@ namespace Domain.Services
                     int.Parse(date.Substring(14,2)),
                     int.Parse(date.Substring(17)));
             return dateTime;
-        }
-        public bool VerifyDateTime(string date)
-        {
-            if (date == "")
-                return true;
-            return Regex.IsMatch(date, @"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}");
         }
     }
 }

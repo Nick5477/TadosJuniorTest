@@ -14,6 +14,8 @@ namespace Domain.Entities
         public bool WasPayed => PayedAt.HasValue;
         public Bill(int id,decimal sum,int clientid, int number,DateTime createdAt)
         {
+            if (sum < 0)
+                throw new ArgumentException("Bill sum should be not negative!");
             Id = id;
             Sum = sum;
             ClientId = clientid;
@@ -24,6 +26,11 @@ namespace Domain.Entities
         public void Pay(DateTime payedAt)
         {
             PayedAt = payedAt;
+        }
+
+        public string GetReverseDisplayNumber()
+        {
+            return $"{CreatedAt.Year:00}.{CreatedAt.Month:00}-{Number:000000}";
         }
     }
 }

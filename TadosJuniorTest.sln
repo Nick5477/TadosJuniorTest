@@ -10,8 +10,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		global.json = global.json
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "src\ConsoleApp\ConsoleApp.csproj", "{FC53321B-378D-4189-BD17-55E2A4919F0F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Db", "src\Infrastructure.Db\Infrastructure.Db.csproj", "{356F64B3-F05B-459A-B16D-A9A564599558}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "src\Domain\Domain.csproj", "{9D57807C-033A-46F5-9D25-84960B514002}"
@@ -24,10 +22,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FC53321B-378D-4189-BD17-55E2A4919F0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FC53321B-378D-4189-BD17-55E2A4919F0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FC53321B-378D-4189-BD17-55E2A4919F0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FC53321B-378D-4189-BD17-55E2A4919F0F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{356F64B3-F05B-459A-B16D-A9A564599558}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{356F64B3-F05B-459A-B16D-A9A564599558}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{356F64B3-F05B-459A-B16D-A9A564599558}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,7 +39,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{FC53321B-378D-4189-BD17-55E2A4919F0F} = {B0B87E1B-938B-4C97-BA7F-9ED7F44DB631}
 		{356F64B3-F05B-459A-B16D-A9A564599558} = {B0B87E1B-938B-4C97-BA7F-9ED7F44DB631}
 		{9D57807C-033A-46F5-9D25-84960B514002} = {B0B87E1B-938B-4C97-BA7F-9ED7F44DB631}
 	EndGlobalSection

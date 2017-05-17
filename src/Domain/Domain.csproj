@@ -43,7 +43,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="Commands\Contexts\AddBillCommandContext.cs" />
     <Compile Include="Commands\Contexts\AddClientCommandContext.cs" />
     <Compile Include="Commands\Contexts\ChangeClientNameCommandContext.cs" />
